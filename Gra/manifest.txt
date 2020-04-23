@@ -1,0 +1,2 @@
+Main-Class: Blockudoku/Main
+Manifest-Version: 1.0
