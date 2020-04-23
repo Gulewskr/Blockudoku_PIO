@@ -7,80 +7,85 @@ import java.awt.event.MouseMotionListener;
 public class Movement implements MouseListener, MouseMotionListener
 {
     private int X,Y;
-    
-    //zmienne pomagające sprawdzić który Klocek jest aktualnie używany
-    
-    public boolean using = false;
-    public boolean out = true;
-    public Klocek kloc;
-    
-    public Movement(Klocek blok)
+    private boolean using = false;
+
+    public Klocek block;
+    public Plansza mapa;
+
+    public Movement(Klocek block, Plansza mapa)
     {
-        blok.addMouseListener(this);
-        blok.addMouseMotionListener(this);
-        kloc = blok;
+        block.addMouseListener(this);
+        block.addMouseMotionListener(this);
+        this.block = block;
+        this.mapa=mapa;
     }
 
     public int wyrownajX()
     {
-       return (X - kloc.getWidth()/2);
+        return (X - block.getWidth()/2);
     }
-    
+
     public int wyrownajY()
     {
-       return (Y - kloc.getHeight()/2);
+        return (Y - block.getHeight()/2);
     }
-    
+
     @Override
-    public void mousePressed(MouseEvent e) 
+    public void mousePressed(MouseEvent e)
     {
-        if(kloc.aktywny)
+        if(block.aktywny)
         {
-        X = e.getX();
-        Y = e.getY();
-        e.getComponent().setLocation(kloc.getX() + wyrownajX(), kloc.getY() + wyrownajY());
-        if(using)
-        {
-            using = false;
-            kloc.resetKloca();
-        }
-        else
-            using = true;
+            X = e.getX();
+            Y = e.getY();
+            e.getComponent().setLocation(block.getX() + wyrownajX(), block.getY() + wyrownajY());
+            if(using)
+            {
+                int x = (e.getComponent().getLocation().x + e.getComponent().getBounds().width / 2 - mapa.getBounds().x + 2 * mapa.getTileSize()) / mapa.getTileSize() - 1;
+                int y = (e.getComponent().getLocation().y + e.getComponent().getBounds().width / 2 - mapa.getBounds().y + 2 * mapa.getTileSize()) / mapa.getTileSize() - 1;
+                if(x >= 0 && x <= 10 && y>=0 && y<=10)
+                {
+                    block.resetKloca();
+                    using = false;
+                    mapa.sprawdzenie(block, x, y);
+                }else
+                {
+                    using = false;
+                    block.resetKloca();
+                }
+            }
+            else
+            {
+                //kursor znika here
+                using = true;
+            }
         }
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {}
-    
+
     @Override
     public void mouseReleased(MouseEvent e){}
 
     @Override
-    public void mouseEntered(MouseEvent e) 
+    public void mouseEntered(MouseEvent e)
     {
-        out = false;
     }
 
     @Override
-    public void mouseExited(MouseEvent e) 
+    public void mouseExited(MouseEvent e)
     {
-        out = true;
+        block.resetKloca();
+        using = false;
     }
 
     @Override
     public void mouseDragged(MouseEvent e){}
 
     @Override
-    public void mouseMoved(MouseEvent e) 
+    public void mouseMoved(MouseEvent e)
     {
-        if(using && kloc.aktywny)
-        e.getComponent().setLocation(e.getX() + kloc.getX() - X + wyrownajX(), e.getY() + kloc.getY() - Y + wyrownajY());
-    }
-    
-    public void zresetujKlocek()
-    {
-        kloc.resetKloca();
-        using = false;
-        out = false;
+        if(using && block.aktywny)
+            e.getComponent().setLocation(e.getX() + block.getX() - X + wyrownajX(), e.getY() + block.getY() - Y + wyrownajY());
     }
 }
