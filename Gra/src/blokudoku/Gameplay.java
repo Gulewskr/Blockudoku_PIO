@@ -28,6 +28,7 @@ public class Gameplay extends JPanel implements Runnable {
     private boolean running;
     private ScoreBoard scoreBoard;
     private Thread gameThread;
+    private EndGame endpanel;
 
     public static Movement[] mv = new Movement[3];
     public static String name;
@@ -50,25 +51,15 @@ public class Gameplay extends JPanel implements Runnable {
         }
     }
 
-    /*
-    public void Hide()
-    {
-        setVisible(false);
-    }
-
-    public void Show()
-    {
-        setVisible(true);
-    }
-
-     */
-
     private void updateTimer() {
         if (timer == 0) {
             koniec = true;
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 3; i++)
+            {
                 klocek[i].aktywny = false;
+                klocek[i].resetKloca();
             }
+            endpanel = new EndGame(wynik, this);
             System.out.println("Koniec Gry");
             System.out.println("Runda: " + runda);
             System.out.println("Wynik: " + wynik);
@@ -91,10 +82,12 @@ public class Gameplay extends JPanel implements Runnable {
             gameThread.join();
             running = false;
             for (int i = 0; i < 3; i++)
+            {
                 mv[i] = null;
-        } catch (InterruptedException e) {
+            }
+            } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+       }
 
     }
 
@@ -111,11 +104,13 @@ public class Gameplay extends JPanel implements Runnable {
                 c++;
             }
         }
-        if (c == 3) {
-            for (int i = 0; i < 3; i++) {
+        if (c == 3)
+        {
+            for (int i = 0; i < 3; i++)
+            {
                 klocek[i].odnowKlocek();
-                timer = 10;
             }
+            timer += 7;
             runda++;
         }
 
@@ -131,7 +126,8 @@ public class Gameplay extends JPanel implements Runnable {
         double nsConvert = 1000000000.0 / 60;
         double deltaT = 0;
 
-        while (running) {
+        while (running)
+        {
             long now = System.nanoTime();
             deltaT += (now - lastTime) / nsConvert;
             lastTime = now;
@@ -143,7 +139,8 @@ public class Gameplay extends JPanel implements Runnable {
                 render();
             frames++;
 
-            if (System.currentTimeMillis() - msTimer > 1000) {
+            if (System.currentTimeMillis() - msTimer > 1000)
+            {
                 msTimer += 1000;
                 updateTimer();
                 System.out.println("FPS: " + frames);
@@ -154,7 +151,8 @@ public class Gameplay extends JPanel implements Runnable {
 
     }
 
-    public void paint(Graphics g) {
+    public void paint(Graphics g)
+    {
         super.paintComponent(g);
 
         g.setColor(Color.black);
@@ -175,16 +173,5 @@ public class Gameplay extends JPanel implements Runnable {
         g.drawString("Wynik: " + wynik, 72 * width / 100, height / 5 + (height / 20 + 10));
         g.drawString("Runda: " + runda, 72 * width / 100, height / 5 + 2 * (height / 20 + 10));
         g.drawString("Timer: " + timer, 72 * width / 100, height / 5 + 3 * (height / 20 + 10));
-
-        if (koniec) {
-            g.setColor(Color.red);
-            g.fillRect(87 * width / 200 - 100, height / 3 - 100, 200, 200);
-            g.setColor(Color.white);
-            g.fillRect(87 * width / 200 - 95, height / 3 - 95, 190, 190);
-            g.setColor(Color.black);
-            g.drawString("Koniec Gry", 87 * width / 200 - 93, height / 3);
-            g.drawString("Wynik: " + wynik, 87 * width / 200 - 88, height / 3 + height / 20 + 10);
-
-        }
     }
 }

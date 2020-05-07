@@ -1,5 +1,9 @@
 package blokudoku;
 
+import java.awt.Cursor;
+import java.awt.image.BufferedImage;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -11,6 +15,8 @@ public class Movement implements MouseListener, MouseMotionListener
 
     public Klocek block;
     public Plansza mapa;
+    private Cursor blankCursor;
+    private Cursor systemCursor = Cursor.getDefaultCursor();
 
     public Movement(Klocek block, Plansza mapa)
     {
@@ -46,17 +52,20 @@ public class Movement implements MouseListener, MouseMotionListener
                 {
                     block.resetKloca();
                     using = false;
+                    showCursor();
                     mapa.sprawdzenie(block, x, y);
                 }else
                 {
                     using = false;
+                    showCursor();
                     block.resetKloca();
                 }
             }
             else
             {
-                //kursor znika here
+                hideCursor();
                 using = true;
+                przesunNaGore();
             }
         }
     }
@@ -77,6 +86,7 @@ public class Movement implements MouseListener, MouseMotionListener
     {
         block.resetKloca();
         using = false;
+        showCursor();
     }
 
     @Override
@@ -87,5 +97,29 @@ public class Movement implements MouseListener, MouseMotionListener
     {
         if(using && block.aktywny)
             e.getComponent().setLocation(e.getX() + block.getX() - X + wyrownajX(), e.getY() + block.getY() - Y + wyrownajY());
+    }
+
+    private void przesunNaGore()
+    {
+        block.getParent().setComponentZOrder(block,0);
+    }
+
+    private void showCursor()
+    {
+        block.setCursor(systemCursor);
+        mapa.setCursor(systemCursor);
+    }
+
+    private void hideCursor()
+    {
+        BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+        blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
+        block.setCursor(blankCursor);
+        mapa.setCursor(blankCursor);
+    }
+
+    public void setUsingoff()
+    {
+        using = false;
     }
 }

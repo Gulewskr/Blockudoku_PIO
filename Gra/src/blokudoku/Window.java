@@ -11,7 +11,9 @@ public class Window extends JFrame {
     private static JPanel cards;
     private static CardLayout layout;
 
-    public Window(int width, int height) {
+
+    public Window(int width, int height)
+    {
         customizeWindow(width, height);
         layout = new CardLayout();
         cards = new JPanel(layout);
@@ -20,23 +22,26 @@ public class Window extends JFrame {
         cards.add(mainMenu, "menu");
         scoreBoard = new ScoreBoard();
         cards.add(scoreBoard, "scoreBoard");
-        gameplay = new Gameplay(width, height, scoreBoard);
-        cards.add(gameplay, "game");
 
         add(cards);
         setVisible(true);
     }
 
-    public static void startGame() {
+    public static void startGame()
+    {
+        gameplay = new Gameplay(Main.WIDTH, Main.HEIGHT, scoreBoard);
+        cards.add(gameplay, "game");
         layout.show(cards, "game");
         gameplay.start();
     }
 
-    public static void showScoreBoard(){
+    public static void showScoreBoard()
+    {
         layout.show(cards, "scoreBoard");
     }
 
-    public static void back() {
+    public static void back()
+    {
         layout.show(cards, "menu");
     }
 
