@@ -2,7 +2,6 @@ package blokudoku;
 
 import java.awt.Color;
 import java.awt.Font;
-import static java.awt.Font.BOLD;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +10,8 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import static java.awt.Font.BOLD;
 import static javax.swing.SwingConstants.CENTER;
 
 public class MainMenu extends JPanel implements ActionListener {
@@ -112,15 +113,17 @@ public class MainMenu extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object src = e.getSource();
 
-        if (src == startButton){
+        if (src == startButton) {
             String name = playerNameField.getText();
-            if(!name.equals("")){
+            if (!name.equals("")) {
                 Gameplay.name = name;
                 Gameplay.isSoundTurnedOn = soundCheckBox.isSelected();
                 Window.startGame();
             }
-        } else if( src == boardButton) {
+        } else if (src == boardButton) {
             Window.showScoreBoard();
+        } else if (src == infoButton) {
+            Window.showInfoPanel();
         }
     }
 }

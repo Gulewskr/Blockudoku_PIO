@@ -2,7 +2,6 @@ package blokudoku;
 
 import java.awt.Color;
 import java.awt.Font;
-import static java.awt.Font.BOLD;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+
+import static java.awt.Font.BOLD;
 import static javax.swing.SwingConstants.CENTER;
 
 public class ScoreBoard extends JPanel implements ActionListener {
@@ -83,7 +84,7 @@ public class ScoreBoard extends JPanel implements ActionListener {
         }
     }
 
-    public void addScore(String name, int score){
+    public void addScore(String name, int score) {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         DateFormat hourFormat = new SimpleDateFormat("HH:mm");
         Date date = new Date();

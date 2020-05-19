@@ -7,19 +7,23 @@ import javax.swing.JPanel;
 public class Window extends JFrame {
     private MainMenu mainMenu;
     private static ScoreBoard scoreBoard;
+    private static InfoPanel infoPanel;
     private static Gameplay gameplay;
     private static JPanel cards;
     private static CardLayout layout;
 
 
-    public Window(int width, int height)
-    {
+    public Window(int width, int height) {
         customizeWindow(width, height);
         layout = new CardLayout();
         cards = new JPanel(layout);
 
         mainMenu = new MainMenu();
         cards.add(mainMenu, "menu");
+
+        infoPanel = new InfoPanel();
+        cards.add(infoPanel, "infoPanel");
+
         scoreBoard = new ScoreBoard();
         cards.add(scoreBoard, "scoreBoard");
 
@@ -27,21 +31,22 @@ public class Window extends JFrame {
         setVisible(true);
     }
 
-    public static void startGame()
-    {
+    public static void startGame() {
         gameplay = new Gameplay(Main.WIDTH, Main.HEIGHT, scoreBoard);
         cards.add(gameplay, "game");
         layout.show(cards, "game");
         gameplay.start();
     }
 
-    public static void showScoreBoard()
-    {
+    public static void showScoreBoard() {
         layout.show(cards, "scoreBoard");
     }
 
-    public static void back()
-    {
+    public static void showInfoPanel() {
+        layout.show(cards, "infoPanel");
+    }
+
+    public static void back() {
         layout.show(cards, "menu");
     }
 

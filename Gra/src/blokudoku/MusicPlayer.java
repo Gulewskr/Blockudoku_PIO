@@ -29,7 +29,7 @@ public class MusicPlayer extends Thread {
 
         while (true)
             while (!clip.isActive()) {
-                if(!isMusicStopped) {
+                if (!isMusicStopped) {
                     clip.setFramePosition(0);
                     clip.start();
                 }
