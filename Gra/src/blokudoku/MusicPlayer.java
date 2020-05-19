@@ -9,7 +9,7 @@ import static javax.sound.sampled.FloatControl.Type.MASTER_GAIN;
 
 public class MusicPlayer extends Thread {
     private Clip clip;
-    private boolean isMusicStopped;
+    private boolean isMusicStopped = false;
 
     @Override
     public void run() {
@@ -26,16 +26,15 @@ public class MusicPlayer extends Thread {
             System.err.println(e.getMessage());
             System.exit(1);
         }
-
-        while (true)
-            while (!clip.isActive()) {
-                if (!isMusicStopped) {
-                    clip.setFramePosition(0);
-                    clip.start();
-                }
-            }
+        play();
     }
 
+    public void play(){
+        if (!clip.isRunning() && !isMusicStopped) {
+            clip.setFramePosition(0);
+            clip.start();
+        }
+    }
 
     public void stopMusic() {
         clip.stop();
@@ -44,5 +43,6 @@ public class MusicPlayer extends Thread {
 
     public void resumeMusic() {
         isMusicStopped = false;
+        play();
     }
 }

@@ -79,10 +79,12 @@ public class Gameplay extends JPanel implements Runnable {
     }
 
     public synchronized void stop() {
-        Sounds.playGameOverSound();
         try {
-            if (isSoundTurnedOn)
+            if (isSoundTurnedOn){
+                Sounds.playGameOverSound();
                 mainThemeThread.stopMusic();
+            }
+
             gameThread.join();
             running = false;
             for (int i = 0; i < 3; i++) {
