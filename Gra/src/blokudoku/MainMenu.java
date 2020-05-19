@@ -116,6 +116,7 @@ public class MainMenu extends JPanel implements ActionListener {
             String name = playerNameField.getText();
             if(!name.equals("")){
                 Gameplay.name = name;
+                Gameplay.isSoundTurnedOn = soundCheckBox.isSelected();
                 Window.startGame();
             }
         } else if( src == boardButton) {

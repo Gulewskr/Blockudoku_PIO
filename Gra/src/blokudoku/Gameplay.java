@@ -2,16 +2,8 @@ package blokudoku;
 
 import java.awt.Color;
 import java.awt.Font;
-import static java.awt.Font.BOLD;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-
-import java.lang.Runnable;
-import java.lang.Thread;
-
-import java.util.concurrent.TimeUnit;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class Gameplay extends JPanel implements Runnable {
@@ -30,6 +22,8 @@ public class Gameplay extends JPanel implements Runnable {
     private Thread gameThread;
     private EndGame endpanel;
 
+    public static boolean isSoundTurnedOn;
+    public static MusicPlayer mainThemeThread;
     public static Movement[] mv = new Movement[3];
     public static String name;
 
@@ -54,8 +48,7 @@ public class Gameplay extends JPanel implements Runnable {
     private void updateTimer() {
         if (timer == 0) {
             koniec = true;
-            for (int i = 0; i < 3; i++)
-            {
+            for (int i = 0; i < 3; i++) {
                 klocek[i].aktywny = false;
                 klocek[i].resetKloca();
             }
@@ -73,21 +66,31 @@ public class Gameplay extends JPanel implements Runnable {
 
     public synchronized void start() {
         gameThread = new Thread(this);
+
+        if (isSoundTurnedOn)
+            if (mainThemeThread == null) {
+                mainThemeThread = new MusicPlayer();
+                mainThemeThread.start();
+            } else {
+                mainThemeThread.resumeMusic();
+            }
         gameThread.start();
         running = true;
     }
 
     public synchronized void stop() {
+        Sounds.playGameOverSound();
         try {
+            if (isSoundTurnedOn)
+                mainThemeThread.stopMusic();
             gameThread.join();
             running = false;
-            for (int i = 0; i < 3; i++)
-            {
+            for (int i = 0; i < 3; i++) {
                 mv[i] = null;
             }
-            } catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
-       }
+        }
 
     }
 
@@ -98,16 +101,16 @@ public class Gameplay extends JPanel implements Runnable {
         combo = (mapa.usun(s));
         if (combo != 0) {
             wynik += combo * combo * 9 + runda;
+            if (isSoundTurnedOn)
+                Sounds.playGamePointSound();
         }
         for (int i = 0; i < 3; i++) {
             if (!klocek[i].aktywny) {
                 c++;
             }
         }
-        if (c == 3)
-        {
-            for (int i = 0; i < 3; i++)
-            {
+        if (c == 3) {
+            for (int i = 0; i < 3; i++) {
                 klocek[i].odnowKlocek();
             }
             timer += 7;
@@ -126,8 +129,7 @@ public class Gameplay extends JPanel implements Runnable {
         double nsConvert = 1000000000.0 / 60;
         double deltaT = 0;
 
-        while (running)
-        {
+        while (running) {
             long now = System.nanoTime();
             deltaT += (now - lastTime) / nsConvert;
             lastTime = now;
@@ -139,8 +141,7 @@ public class Gameplay extends JPanel implements Runnable {
                 render();
             frames++;
 
-            if (System.currentTimeMillis() - msTimer > 1000)
-            {
+            if (System.currentTimeMillis() - msTimer > 1000) {
                 msTimer += 1000;
                 updateTimer();
                 System.out.println("FPS: " + frames);
@@ -151,8 +152,7 @@ public class Gameplay extends JPanel implements Runnable {
 
     }
 
-    public void paint(Graphics g)
-    {
+    public void paint(Graphics g) {
         super.paintComponent(g);
 
         g.setColor(Color.black);
