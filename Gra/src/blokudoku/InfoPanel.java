@@ -34,18 +34,18 @@ public class InfoPanel extends JPanel implements ActionListener {
 
     private void addTitleLabel() {
         JLabel titleLabel = new JLabel("Informacje o grze", CENTER);
-        titleLabel.setBounds(Main.WIDTH / 2 - 250, 10, 500, 100);
+        titleLabel.setBounds(Main.WIDTH/2 - 25*Main.WIDTH/124, Main.WIDTH/124, 50*Main.WIDTH/124, 10*Main.WIDTH/124);
         titleLabel.setForeground(white);
-        titleLabel.setFont(new Font("NewFont", BOLD, 40));
+        titleLabel.setFont(new Font("NewFont", BOLD, 4*Main.WIDTH/124));
         add(titleLabel);
     }
 
     private void addBackButton() {
         backButton = new JButton("◄ Powrót");
-        backButton.setBounds(20, 20, 150, 35);
+        backButton.setBounds(Main.WIDTH/62, Main.WIDTH/62, 15*Main.WIDTH/124, 7*Main.WIDTH/248);
         backButton.setBackground(white);
         backButton.setFocusable(false);
-        backButton.setFont(new Font("NewFont", BOLD, 15));
+        backButton.setFont(new Font("NewFont", BOLD, 3*Main.WIDTH/248));
         backButton.addActionListener(this);
         add(backButton);
     }
@@ -57,15 +57,15 @@ public class InfoPanel extends JPanel implements ActionListener {
         g.setColor(Color.gray.darker());
         g.fillRect(0, 0, Main.WIDTH, Main.HEIGHT);
 
-        g.setColor(blue);
         for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
+            for (int j = 0; j < 9; j++)
+            {
                 if (j % 3 == 0 && (j != 0 || i % 3 == 0))
                     if (g.getColor() == white)
                         g.setColor(Color.darkGray);
                     else
                         g.setColor(white);
-                g.fillRect(700 + j * 45, 150 + i * 45, 40, 40);
+                g.fillRect(35*Main.WIDTH/62 + j * 9*Main.WIDTH/248, 15*Main.WIDTH/124 + i * 9*Main.WIDTH/248, Main.WIDTH/31, Main.WIDTH/31);
 
             }
         }
@@ -81,9 +81,9 @@ public class InfoPanel extends JPanel implements ActionListener {
 
     private void addBasicInfo() {
         JLabel title = new JLabel("• Czym jest BlokuDoku?");
-        title.setBounds(100, 90, 250, 100);
+        title.setBounds(5*Main.WIDTH/62, 9*Main.WIDTH/124, 25*Main.WIDTH/124, 5*Main.WIDTH/62);
         title.setForeground(blue);
-        title.setFont(new Font("NewFont", BOLD, 20));
+        title.setFont(new Font("NewFont", BOLD, Main.WIDTH/62));
         add(title);
         JTextArea textArea = new JTextArea(
                 "BlockuDoku jest niezwykłym połączeniem sudoku oraz łamigłówek z klocków. Jest to prosta," +
@@ -91,21 +91,21 @@ public class InfoPanel extends JPanel implements ActionListener {
                         " Łącz klocki w linie i kwadraty by usuwać je z planszy. Oczyszczaj planszę i pobij swój rekord.",
                 6,
                 20);
-        textArea.setFont(new Font("Serif", Font.ITALIC, 16));
+        textArea.setFont(new Font("Serif", Font.ITALIC, 2*Main.WIDTH/155));
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
         textArea.setOpaque(false);
         textArea.setEditable(false);
         textArea.setForeground(white);
-        textArea.setBounds(100, 160, 500, 100);
+        textArea.setBounds(5*Main.WIDTH/62, 4*Main.WIDTH/31, 25*Main.WIDTH/62, 5*Main.WIDTH/62);
         add(textArea);
     }
 
     private void addRulesInfo() {
         JLabel title = new JLabel("• Funkcje:");
-        title.setBounds(100, 250, 250, 100);
+        title.setBounds(5*Main.WIDTH/62, 25*Main.WIDTH/124, 25*Main.WIDTH/124, 5*Main.WIDTH/62);
         title.setForeground(blue);
-        title.setFont(new Font("NewFont", BOLD, 20));
+        title.setFont(new Font("NewFont", BOLD, 1*Main.WIDTH/62));
         add(title);
         JTextArea textArea = new JTextArea(
                 "✔ Plansza 9x9. Twórz linie i kwadraty na znanej z Sudoku siatce 9x9.\n" +
@@ -116,21 +116,21 @@ public class InfoPanel extends JPanel implements ActionListener {
                         "✔ Wciągająca rozgrywka. Graj dla zabicia czasu lub ćwicz umysł – kiedy chcesz i gdzie chcesz.",
                 6,
                 20);
-        textArea.setFont(new Font("Serif", Font.ITALIC, 16));
+        textArea.setFont(new Font("Serif", Font.ITALIC, 2*Main.WIDTH/155));
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
         textArea.setOpaque(false);
         textArea.setEditable(false);
         textArea.setForeground(white);
-        textArea.setBounds(100, 320, 500, 250);
+        textArea.setBounds(5*Main.WIDTH/62, 8*Main.WIDTH/31, 25*Main.WIDTH/62, 25*Main.WIDTH/124);
         add(textArea);
     }
 
     private void addAuthorsInfo() {
         JLabel title = new JLabel("• Autorzy:");
-        title.setBounds(100, 510, 250, 100);
+        title.setBounds(5*Main.WIDTH/62, 51*Main.WIDTH/124, 25*Main.WIDTH/124, 5*Main.WIDTH/62);
         title.setForeground(blue);
-        title.setFont(new Font("NewFont", BOLD, 20));
+        title.setFont(new Font("NewFont", BOLD, Main.WIDTH/62));
         add(title);
         JTextArea textArea = new JTextArea(
                 "Rafał Gulewski,   Franciszek Wysocki,   Antoni Malinowski,   " +
@@ -138,13 +138,13 @@ public class InfoPanel extends JPanel implements ActionListener {
 
                 6,
                 20);
-        textArea.setFont(new Font("Serif", Font.ITALIC, 16));
+        textArea.setFont(new Font("Serif", Font.ITALIC, 2*Main.WIDTH/155));
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
         textArea.setOpaque(false);
         textArea.setEditable(false);
         textArea.setForeground(white);
-        textArea.setBounds(100, 580, 460, 100);
+        textArea.setBounds(5*Main.WIDTH/62, 29*Main.WIDTH/62, 23*Main.WIDTH/62, 5*Main.WIDTH/62);
         add(textArea);
     }
 

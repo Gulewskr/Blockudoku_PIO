@@ -2,6 +2,9 @@ package blokudoku;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class Plansza extends JPanel {
@@ -10,6 +13,9 @@ public class Plansza extends JPanel {
     private final int tileBreak;
     private static int WIDTHscreen;
     private static int HEIGHTscreen;
+    private Color tileColor;
+    private BufferedImage rainbowTileImage;
+    private BufferedImage skinImage;
 
     Plansza(int width, int height) {
         tileSize = 6 * height / 90;
@@ -23,6 +29,9 @@ public class Plansza extends JPanel {
                 map[i][j] = 0;
             }
         }
+        tileColor = Window.tileColor();
+        rainbowTileImage = Window.rainbowTile();
+        skinImage = Window.skinTile();
     }
 
     public int getTileSize() {
@@ -38,8 +47,17 @@ public class Plansza extends JPanel {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 if (map[i][j] == 1) {
-                    grafika.setColor(Color.blue);
-                    grafika.fillRect(WIDTHscreen + j * tileSize, HEIGHTscreen + i * tileSize, tileSize - tileBreak, tileSize - tileBreak);
+                    grafika.setColor(tileColor);
+                    if(grafika.getColor().getRGB() != new Color(0).getRGB())
+                    {
+                        grafika.fillRect(WIDTHscreen + j * tileSize, HEIGHTscreen + i * tileSize, tileSize - tileBreak, tileSize - tileBreak);
+                        grafika.drawImage(skinImage,WIDTHscreen + j * tileSize, HEIGHTscreen + i * tileSize, tileSize - tileBreak, tileSize - tileBreak,null);
+                    }
+                    else
+                    {
+                        grafika.drawImage(rainbowTileImage,WIDTHscreen + j * tileSize, HEIGHTscreen + i * tileSize, tileSize - tileBreak, tileSize - tileBreak, null);
+                        grafika.drawImage(skinImage,WIDTHscreen + j * tileSize, HEIGHTscreen + i * tileSize, tileSize - tileBreak, tileSize - tileBreak,null);
+                    }
                 } else if (((i > 2 && i < 6) && (j < 3 || j > 5)) || ((j > 2 && j < 6) && (i < 3 || i > 5))) {
                     grafika.setColor(Color.gray);
                     grafika.fillRect(WIDTHscreen + j * tileSize, HEIGHTscreen + i * tileSize, tileSize - tileBreak, tileSize - tileBreak);

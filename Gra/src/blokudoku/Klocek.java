@@ -2,7 +2,10 @@ package blokudoku;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.Random;
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class Klocek extends JPanel
@@ -16,6 +19,9 @@ public class Klocek extends JPanel
     public int numerKlocka;
     public boolean aktywny;
 
+    private Color tileColor;
+    private BufferedImage rainbowTileImage, skinTileImage;
+
     Klocek(int numer, int width, int height, int tileSize, int tileBreak)
     {
         this.aktywny = true;
@@ -24,7 +30,7 @@ public class Klocek extends JPanel
         this.height = height;
         this.tileSize  = tileSize;
         this.tileBreak = tileBreak;
-        this.setSize(3 * tileSize - tileBreak, 3  * tileSize - tileBreak);
+        this.setSize(3 * tileSize - tileBreak, 3*tileSize - tileBreak);
         this.setName("Klocek :" + numer);
         this.setLayout(null);
         this.setBackground(new Color(0,0,0,0));
@@ -32,37 +38,54 @@ public class Klocek extends JPanel
         switch(numerKlocka)
         {
             case 1:
-                this.setBounds((int)(0.275 * width), 65 * height/ 90 , getWidth(), getHeight());
+                this.setBounds((int)(0.275*width), 65*height/90 , getWidth(), getHeight());
                 break;
             case 2:
-                this.setBounds((int)(0.275 * width + 3 * tileSize), 65 * height/ 90 , getWidth(), getHeight());
+                this.setBounds((int)(0.275*width + 3*tileSize), 65*height/90 , getWidth(), getHeight());
                 break;
             case 3:
-                this.setBounds((int)(0.275 * width + 6 * tileSize), 65 * height/ 90 , getWidth(), getHeight());
+                this.setBounds((int)(0.275*width + 6*tileSize), 65*height/90 , getWidth(), getHeight());
                 break;
             default:
                 System.out.println("Nieobslugiwany numer klocka");
                 break;
         }
+        tileColor = Window.tileColor();
+        rainbowTileImage = Window.rainbowTile();
+        skinTileImage = Window.skinTile();
     }
 
-    public void draw(Graphics grafika) {
-        switch (numerKlocka) {
+    public void draw(Graphics grafika)
+    {
+        switch (numerKlocka)
+        {
             case 1:
             case 3:
-                grafika.setColor(new Color(0x8A2BE2));
+                grafika.setColor(tileColor);
                 break;
             case 2:
-                grafika.setColor(new Color(0x00BFFF));
+                grafika.setColor(new Color(tileColor.getRGB() + 200));
                 break;
             default:
                 System.out.println("Nieobslugiwany numer klocka");
                 break;
         }
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (zakres[i][j] == 1) {
-                    grafika.fillRect(getLocation().x + j * tileSize, getLocation().y + i * tileSize, tileSize - tileBreak, tileSize - tileBreak);
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                if (zakres[i][j] == 1)
+                {
+                    if(grafika.getColor().getRGB() != new Color(0).getRGB() && grafika.getColor().getRGB() != new Color(200).getRGB())
+                    {
+                        grafika.fillRect(getLocation().x + j * tileSize, getLocation().y + i * tileSize, tileSize - tileBreak, tileSize - tileBreak);
+                        grafika.drawImage(skinTileImage,getLocation().x + j * tileSize, getLocation().y + i * tileSize, tileSize - tileBreak, tileSize - tileBreak,null);
+                    }
+                    else
+                    {
+                        grafika.drawImage(rainbowTileImage,getLocation().x + j * tileSize, getLocation().y + i * tileSize, tileSize - tileBreak, tileSize - tileBreak, null);
+                        grafika.drawImage(skinTileImage,getLocation().x + j * tileSize, getLocation().y + i * tileSize, tileSize - tileBreak, tileSize - tileBreak,null);
+                    }
                 }
             }
         }
@@ -142,13 +165,13 @@ public class Klocek extends JPanel
         switch(numerKlocka)
         {
             case 1:
-                this.setBounds((int)(0.275 * width), 65 * height / 90 , getWidth(), getHeight());
+                this.setBounds((int)(0.275*width), 65*height/90 , getWidth(), getHeight());
                 break;
             case 2:
-                this.setBounds((int)(0.275 * width + 3 * tileSize), 65 * height / 90 , getWidth(), getHeight());
+                this.setBounds((int)(0.275*width + 3*tileSize), 65*height/90 , getWidth(), getHeight());
                 break;
             case 3:
-                this.setBounds((int)(0.275 * width + 6 * tileSize), 65 * height / 90 , getWidth(), getHeight());
+                this.setBounds((int)(0.275*width + 6*tileSize), 65*height/90 , getWidth(), getHeight());
                 break;
             default:
                 System.out.println("Nieobslugiwany numer klocka");
