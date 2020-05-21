@@ -36,10 +36,10 @@ public class ScoreBoard extends JPanel implements ActionListener {
 
     private void addTitleLabel() {
         titleLabel = new JLabel("Tabela wyników", CENTER);
-        titleLabel.setBounds(Main.WIDTH/2 - 25*Main.WIDTH/124, Main.WIDTH/124, 25*Main.WIDTH/62, 5*Main.WIDTH/62);
-        titleLabel.setBounds(Main.WIDTH/2 - 25*Main.WIDTH/124, Main.WIDTH/124, 25*Main.WIDTH/62, 5*Main.WIDTH/62);
+        titleLabel.setBounds(Main.WIDTH / 2 - 25 * Main.WIDTH / 124, Main.WIDTH / 124, 25 * Main.WIDTH / 62, 5 * Main.WIDTH / 62);
+        titleLabel.setBounds(Main.WIDTH / 2 - 25 * Main.WIDTH / 124, Main.WIDTH / 124, 25 * Main.WIDTH / 62, 5 * Main.WIDTH / 62);
         titleLabel.setForeground(Color.white);
-        titleLabel.setFont(new Font("NewFont", BOLD, Main.WIDTH/31));
+        titleLabel.setFont(new Font("NewFont", BOLD, Main.WIDTH / 31));
         add(titleLabel);
     }
 
@@ -52,18 +52,18 @@ public class ScoreBoard extends JPanel implements ActionListener {
         table.setAutoCreateRowSorter(true);
         JScrollPane jScrollPane = new JScrollPane(table);
         if (cells.length < 30)
-            jScrollPane.setBounds(Main.WIDTH/2 - 25*Main.WIDTH/124, 5*Main.WIDTH/62, 25*Main.WIDTH/62, 5*Main.WIDTH/248 + 16 * cells.length);
+            jScrollPane.setBounds(Main.WIDTH / 2 - 25 * Main.WIDTH / 124, 5 * Main.WIDTH / 62, 25 * Main.WIDTH / 62, 5 * Main.WIDTH / 248 + 16 * cells.length);
         else
-            jScrollPane.setBounds(Main.WIDTH/2 - 25*Main.WIDTH/124, 5*Main.WIDTH/62, 25*Main.WIDTH/62, 25*Main.WIDTH/62);
+            jScrollPane.setBounds(Main.WIDTH / 2 - 25 * Main.WIDTH / 124, 5 * Main.WIDTH / 62, 25 * Main.WIDTH / 62, 25 * Main.WIDTH / 62);
         add(jScrollPane);
     }
 
     private void addBackButton() {
         backButton = new JButton("◄ Powrót");
-        backButton.setBounds(Main.WIDTH/62, Main.WIDTH/62, 15*Main.WIDTH/124, 7*Main.WIDTH/248);
+        backButton.setBounds(Main.WIDTH / 62, Main.WIDTH / 62, 15 * Main.WIDTH / 124, 7 * Main.WIDTH / 248);
         backButton.setBackground(Color.white);
         backButton.setFocusable(false);
-        backButton.setFont(new Font("NewFont", BOLD, 3*Main.WIDTH/248));
+        backButton.setFont(new Font("NewFont", BOLD, 3 * Main.WIDTH / 248));
         backButton.addActionListener(this);
         add(backButton);
     }

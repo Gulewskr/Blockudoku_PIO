@@ -34,11 +34,11 @@ public class MainMenu extends JPanel implements ActionListener {
 
     private void addSoundFields() {
         soundLabel = new JLabel("Graj z dźwiękiem:", JLabel.LEFT);
-        soundLabel.setBounds(28*Main.WIDTH/62, 223*Main.HEIGHT/558, 5*Main.WIDTH/62, Main.WIDTH/62);
+        soundLabel.setBounds(28 * Main.WIDTH / 62, 223 * Main.HEIGHT / 558, 5 * Main.WIDTH / 62, Main.WIDTH / 62);
         add(soundLabel);
 
         soundCheckBox = new JCheckBox();
-        soundCheckBox.setBounds(67*Main.WIDTH/124, 223*Main.HEIGHT/558 , Main.WIDTH/62, Main.WIDTH/62);
+        soundCheckBox.setBounds(67 * Main.WIDTH / 124, 223 * Main.HEIGHT / 558, Main.WIDTH / 62, Main.WIDTH / 62);
         soundCheckBox.doClick();
 
         soundCheckBox.addActionListener(this);
@@ -47,32 +47,32 @@ public class MainMenu extends JPanel implements ActionListener {
 
     private void addName() {
         playerNameTip = new JLabel("Wprowadź swoje imię/nick:", CENTER);
-        playerNameTip.setFont(new Font("NewFont", BOLD, 9*Main.WIDTH/620));
-        playerNameTip.setBounds(37*Main.WIDTH/124, 53*Main.HEIGHT/186, 25*Main.WIDTH/62, Main.WIDTH/62);
+        playerNameTip.setFont(new Font("NewFont", BOLD, 9 * Main.WIDTH / 620));
+        playerNameTip.setBounds(37 * Main.WIDTH / 124, 53 * Main.HEIGHT / 186, 25 * Main.WIDTH / 62, Main.WIDTH / 62);
         add(playerNameTip);
 
         playerNameField = new JTextField("", CENTER);
-        playerNameField.setFont(new Font("NewFont", BOLD, 9*Main.WIDTH/620));
+        playerNameField.setFont(new Font("NewFont", BOLD, 9 * Main.WIDTH / 620));
         playerNameField.setHorizontalAlignment(CENTER);
-        playerNameField.setBounds(47*Main.WIDTH/124, 179*Main.HEIGHT/558, 15*Main.WIDTH/62, 5*Main.WIDTH/124);
+        playerNameField.setBounds(47 * Main.WIDTH / 124, 179 * Main.HEIGHT / 558, 15 * Main.WIDTH / 62, 5 * Main.WIDTH / 124);
         add(playerNameField);
     }
 
     private void addTitle() {
         titleLabel = new JLabel("BlokuDoku", CENTER);
-        titleLabel.setBounds(37*Main.WIDTH/124, 13*Main.HEIGHT/186, 25*Main.WIDTH/62, 40*Main.WIDTH/279);
+        titleLabel.setBounds(37 * Main.WIDTH / 124, 13 * Main.HEIGHT / 186, 25 * Main.WIDTH / 62, 40 * Main.WIDTH / 279);
         titleLabel.setForeground(Color.BLUE);
-        titleLabel.setFont(new Font("NewFont", BOLD, 2*Main.WIDTH/31));
+        titleLabel.setFont(new Font("NewFont", BOLD, 2 * Main.WIDTH / 31));
         add(titleLabel);
     }
 
     private void addPlayButton() {
         startButton = new JButton("Rozpocznij");
-        startButton.setBounds(47*Main.WIDTH/124 , Main.HEIGHT/2, 15*Main.WIDTH/62, 3*Main.WIDTH/62);
+        startButton.setBounds(47 * Main.WIDTH / 124, Main.HEIGHT / 2, 15 * Main.WIDTH / 62, 3 * Main.WIDTH / 62);
         startButton.setForeground(Color.blue);
         startButton.setBackground(Color.black);
         startButton.setFocusable(false);
-        startButton.setFont(new Font("NewFont", BOLD, 9*Main.WIDTH/620));
+        startButton.setFont(new Font("NewFont", BOLD, 9 * Main.WIDTH / 620));
         startButton.addActionListener(this);
         add(startButton);
 
@@ -81,29 +81,29 @@ public class MainMenu extends JPanel implements ActionListener {
     private void addLeftButtons() {
 
         infoButton = new JButton("Informacje");
-        infoButton.setBounds(40*Main.WIDTH/124, 19*Main.HEIGHT/31, 16*Main.WIDTH/124, 5*Main.WIDTH/124);
+        infoButton.setBounds(38 * Main.WIDTH / 124, 19 * Main.HEIGHT / 31, 16 * Main.WIDTH / 124 - 20, 5 * Main.WIDTH / 124);
         infoButton.setForeground(Color.blue);
         infoButton.setBackground(Color.black);
         infoButton.setFocusable(false);
-        infoButton.setFont(new Font("NewFont", BOLD, 3*Main.WIDTH/248));
+        infoButton.setFont(new Font("NewFont", BOLD, 3 * Main.WIDTH / 248 - 2));
         infoButton.addActionListener(this);
         add(infoButton);
 
         boardButton = new JButton("Tabela wyników");
-        boardButton.setBounds(59*Main.WIDTH/124, 19*Main.HEIGHT/31, 16*Main.WIDTH/124, 5*Main.WIDTH/124);
+        boardButton.setBounds(54 * Main.WIDTH / 124, 19 * Main.HEIGHT / 31, 16 * Main.WIDTH / 124, 5 * Main.WIDTH / 124);
         boardButton.setForeground(Color.blue);
         boardButton.setBackground(Color.black);
         boardButton.setFocusable(false);
-        boardButton.setFont(new Font("NewFont", BOLD, 3*Main.WIDTH/248));
+        boardButton.setFont(new Font("NewFont", BOLD, 3 * Main.WIDTH / 248 - 2));
         boardButton.addActionListener(this);
         add(boardButton);
 
-        optionsButton = new JButton("O");
-        optionsButton.setBounds(78*Main.WIDTH/124, 19*Main.HEIGHT/31 ,5*Main.WIDTH/124 , 5*Main.WIDTH/124);
+        optionsButton = new JButton("Opcje");
+        optionsButton.setBounds(72 * Main.WIDTH / 124, 19 * Main.HEIGHT / 31, 16 * Main.WIDTH / 124 - 20, 5 * Main.WIDTH / 124);
         optionsButton.setForeground(Color.blue);
         optionsButton.setBackground(Color.black);
         optionsButton.setFocusable(false);
-        optionsButton.setFont(new Font("NewFont", BOLD, 3*Main.WIDTH/248));
+        optionsButton.setFont(new Font("NewFont", BOLD, 3 * Main.WIDTH / 248 - 2));
         optionsButton.addActionListener(this);
         add(optionsButton);
     }
@@ -115,7 +115,7 @@ public class MainMenu extends JPanel implements ActionListener {
         g.fillRect(0, 0, Main.WIDTH, Main.HEIGHT);
 
         g.setColor(Color.white);
-        g.fillRect(37*Main.WIDTH/124, 13*Main.HEIGHT/136, 25*Main.WIDTH/62, 200*Main.HEIGHT/279);
+        g.fillRect(37 * Main.WIDTH / 124, 13 * Main.HEIGHT / 136, 25 * Main.WIDTH / 62, 200 * Main.HEIGHT / 279);
     }
 
     @Override

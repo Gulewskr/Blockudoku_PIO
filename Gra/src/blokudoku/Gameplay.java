@@ -1,17 +1,17 @@
 package blokudoku;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.image.BufferStrategy;
-import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JPanel;
 
 import static java.awt.Font.BOLD;
 
-public class Gameplay extends JPanel implements Runnable ,ActionListener{
+public class Gameplay extends JPanel implements Runnable, ActionListener {
     private static final Klocek[] klocek = new Klocek[3];
 
     private static Plansza mapa;
@@ -85,7 +85,7 @@ public class Gameplay extends JPanel implements Runnable ,ActionListener{
 
     public synchronized void stop() {
         try {
-            if (isSoundTurnedOn){
+            if (isSoundTurnedOn) {
                 Sounds.playGameOverSound();
                 mainThemeThread.stopMusic();
             }
@@ -126,8 +126,7 @@ public class Gameplay extends JPanel implements Runnable ,ActionListener{
 
     }
 
-    public void render()
-    {
+    public void render() {
         repaint();
     }
 
@@ -137,8 +136,7 @@ public class Gameplay extends JPanel implements Runnable ,ActionListener{
         double nsConvert = 1000000000.0 / 60;
         double deltaT = 0;
 
-        while (running)
-        {
+        while (running) {
             long now = System.nanoTime();
             deltaT += (now - lastTime) / nsConvert;
             lastTime = now;
@@ -167,36 +165,34 @@ public class Gameplay extends JPanel implements Runnable ,ActionListener{
         g.setColor(Color.black);
         g.fillRect(0, 0, width, height);
         mapa.draw((Graphics2D) g);
-        for (int i = 0; i < 3; i++)
-        {
+        for (int i = 0; i < 3; i++) {
             klocek[i].draw(g);
         }
         stopButton.repaint();
         g.setColor(Color.red);
-        g.fillRect(863*width/1240, 269*height/1395, 129*width/620, 97*height/279);
+        g.fillRect(863 * width / 1240, 269 * height / 1395, 129 * width / 620, 97 * height / 279);
         g.setColor(Color.white);
-        g.fillRect(7*width/10, height/5, width/5, height/3);
+        g.fillRect(7 * width / 10, height / 5, width / 5, height / 3);
         g.setColor(Color.black);
-        g.setFont(new Font("arial", Font.BOLD, height/20));
-        g.drawString("Wynik: " + wynik, 72*width/100, height/5 + (359*height/5580));
-        g.drawString("Runda: " + runda, 72*width/100, height/5 + 2*(359*height/5580));
-        g.drawString("Timer: " + timer, 72*width/100, height/5 + 3*(359*height/5580));
+        g.setFont(new Font("arial", Font.BOLD, height / 20));
+        g.drawString("Wynik: " + wynik, 72 * width / 100, height / 5 + (359 * height / 5580));
+        g.drawString("Runda: " + runda, 72 * width / 100, height / 5 + 2 * (359 * height / 5580));
+        g.drawString("Timer: " + timer, 72 * width / 100, height / 5 + 3 * (359 * height / 5580));
     }
 
     private void addStopButton() {
         stopButton = new JButton("Zakończ");
-        stopButton.setBounds(86*Main.WIDTH/124 , 8*Main.HEIGHT/11, 15*Main.WIDTH/62, 3*Main.WIDTH/62);
+        stopButton.setBounds(86 * Main.WIDTH / 124, 8 * Main.HEIGHT / 11, 15 * Main.WIDTH / 62, 3 * Main.WIDTH / 62);
         stopButton.setForeground(Color.blue);
         stopButton.setBackground(Color.black);
-        stopButton.setFont(new Font("NewFont", BOLD, 9*Main.WIDTH/620));
+        stopButton.setFont(new Font("NewFont", BOLD, 9 * Main.WIDTH / 620));
         stopButton.addActionListener(this);
         this.add(stopButton);
         stopButton.setVisible(true);
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         Object src = e.getSource();
         if (src == stopButton) {
             timer = 0;

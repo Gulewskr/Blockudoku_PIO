@@ -25,11 +25,11 @@ public class Movement implements MouseListener, MouseMotionListener {
     }
 
     public int wyrownajX() {
-        return (X - block.getWidth()/2);
+        return (X - block.getWidth() / 2);
     }
 
     public int wyrownajY() {
-        return (Y - block.getHeight()/2);
+        return (Y - block.getHeight() / 2);
     }
 
     @Override
