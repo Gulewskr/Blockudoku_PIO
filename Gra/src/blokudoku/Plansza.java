@@ -15,7 +15,7 @@ public class Plansza extends JPanel {
     private BufferedImage rainbowTileImage;
     private BufferedImage skinImage;
 
-    Plansza(int width, int height) {
+    public Plansza(int width, int height) {
         tileSize = 6 * height / 90;
         tileBreak = 2 * tileSize / 9;
         WIDTHscreen = 11 * width / 40;

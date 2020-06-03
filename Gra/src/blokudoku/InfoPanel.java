@@ -64,7 +64,8 @@ public class InfoPanel extends JPanel implements ActionListener {
                         g.setColor(Color.darkGray);
                     else
                         g.setColor(white);
-                g.fillRect(35 * Main.WIDTH / 62 + j * 9 * Main.WIDTH / 248, 15 * Main.WIDTH / 124 + i * 9 * Main.WIDTH / 248, Main.WIDTH / 31, Main.WIDTH / 31);
+                g.fillRect(35 * Main.WIDTH / 62 + j * 9 * Main.WIDTH / 248, 15 * Main.WIDTH / 124 + i * 9 * Main.WIDTH / 248,
+                        Main.WIDTH / 31, Main.WIDTH / 31);
 
             }
         }

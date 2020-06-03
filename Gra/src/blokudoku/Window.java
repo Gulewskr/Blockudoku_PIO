@@ -3,6 +3,9 @@ package blokudoku;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -86,14 +89,35 @@ public class Window extends JFrame {
     }
 
     public static Color tileColor() {
-        return optionMenu.getTileColor();
+        if(optionMenu == null)
+            return Color.blue;
+        else
+            return optionMenu.getTileColor();
     }
 
     public static BufferedImage rainbowTile() {
-        return optionMenu.getRainbowTileImage();
+        if(optionMenu == null) {
+            BufferedImage tileImage = null;
+            try {
+                tileImage = ImageIO.read(new File("src/blokudoku/images/rainbowTile.png"));
+            } catch (IOException e) {
+                System.out.println(e);
+            }
+            return tileImage;
+        } else
+            return optionMenu.getRainbowTileImage();
     }
 
     public static BufferedImage skinTile() {
-        return optionMenu.getSkinImage();
+        if(optionMenu == null) {
+            BufferedImage tileImage = null;
+            try {
+                tileImage = ImageIO.read(new File("src/blokudoku/images/clean.png"));
+            } catch (IOException e) {
+                System.out.println(e);
+            }
+            return tileImage;
+        } else
+            return optionMenu.getSkinImage();
     }
 }
