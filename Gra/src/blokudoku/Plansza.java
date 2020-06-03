@@ -65,347 +65,242 @@ public class Plansza extends JPanel {
 
     }
 
+    //Sprawdza pola 3x3 = t[0-8], wiersze = t[9-17] i kolumny = t[18-26] ,gdy uzupełnione nadaje wartość 1
+    public void sprawdz(int[] t)
+    {
+        int x=0, y=0;
+        for(int i=0; i<9; i++)
+        {
+            t[i]=check3x3(y,x);
+            if((i+1)%3==0)
+            {
+                y=0;
+                x+=3;
+            }
+            else y+=3;
+        }
+        for (int i = 0; i < 9; i++)
+        {
+            t[9 + i]=checkRow(i);
+        }
+        for (int i = 0; i < 9; i++)
+        {
+            t[18+i]=checkColumn(i);
+        }
+    }
+
+    public int check3x3(int y, int x)
+    {
+        int tmp=0;
+        for(int i=y; i<y+3 ;i++)
+            for(int j=x; j<x+3 ;j++)
+                if(map[i][j]==1)
+                    tmp++;
+        return tmp-8;
+    }
+
+    public int checkRow(int y)
+    {
+        int tmp=0;
+        for(int i=0; i<9 ;i++)
+            if(map[y][i]==1)
+                tmp++;
+        return tmp-8;
+    }
+
+    public int checkColumn(int x)
+    {
+        int tmp=0;
+        for(int i=0; i<9 ; i++)
+            if(map[i][x]==1)
+                tmp++;
+        return tmp-8;
+    }
+
+    public void delete3x3(int y, int x)
+    {
+        for(int i=y; i<y+3 ;i++)
+            for(int j=x; j<x+3 ;j++)
+                map[i][j]=0;
+    }
+
+    public void deleteColumn(int x)
+    {
+        for(int i=0; i<9; i++)
+            map[i][x]=0;
+    }
+
+    public void deleteRow(int y)
+    {
+        for(int i=0; i<9; i++)
+            map[y][i]=0;
+    }
+
+    //Usuwa pola analizując tabele wypełnioną funkcją sprawdz
+    public int usun(int[] t) {
+        int combo = 0;
+        int x=0, y=0;
+        for(int i=0; i<9; i++)
+        {
+            if(t[i]==1)
+            {
+                combo++;
+                delete3x3(y, x);
+            }
+            if((i+1)%3==0)
+            {
+                y=0;
+                x+=3;
+            }
+            else y+=3;
+        }
+        for(int i=9; i<18; i++)
+        {
+            if(t[i]==1)
+            {
+                combo++;
+                deleteRow(i-9);
+            }
+        }
+        for(int i=18; i<27; i++)
+        {
+            if(t[i]==1)
+            {
+                combo++;
+                deleteColumn(i-18);
+            }
+        }
+        return combo;
+    }
+
     //Sprawdza czy można wstawić klocek jak ktoś wie jak to skrócić to poproszę pomysł xD
     public boolean sprawdzenie(Klocek block, int x, int y) {
+        if(!checkBorders(block.zakres, x, y)) return false;
         switch (x) {
             case 0:
-                for (int i = 0; i < 3; i++)
-                    if (block.zakres[i][0] == 1 || block.zakres[i][1] == 1)
-                        return false;
-                break;
+                switch (y)
+                {
+                    case 0:
+                        if(!petlaY0X0(block.zakres,x,y))
+                            return false;
+                        break;
+                    case 1:
+                        if(!petlaY1X0(block.zakres,x,y))
+                            return false;
+                        break;
+                    case 9:
+                        if(!petlaY9X0(block.zakres,x,y))
+                            return false;
+                        break;
+                    case 10:
+                        if(!petlaY10X0(block.zakres,x,y))
+                            return false;
+                        break;
+                    default:
+                        if(!petlaX0(block.zakres,x,y))
+                            return false;
+                        break;
+                }
+                block.usunKlocek();
+                return true;
             case 1:
-                for (int i = 0; i < 3; i++)
-                    if (block.zakres[i][0] == 1)
-                        return false;
-                break;
+                switch (y) {
+                    case 0:
+                        if(!petlaY0X1(block.zakres,x,y))
+                            return false;
+                        break;
+                    case 1:
+                        if(!petlaY1X1(block.zakres,x,y))
+                            return false;
+                        break;
+                    case 9:
+                        if(!petlaY9X1(block.zakres,x,y))
+                            return false;
+                        break;
+                    case 10:
+                        if(!petlaY10X1(block.zakres,x,y))
+                            return false;
+                        break;
+                    default:
+                        if(!petlaX1(block.zakres,x,y))
+                            return false;
+                        break;
+                }
+                block.usunKlocek();
+                return true;
             case 9:
-                for (int i = 0; i < 3; i++)
-                    if (block.zakres[i][2] == 1)
-                        return false;
-                break;
+                switch (y) {
+                    case 0:
+                        if(!petlaY0X9(block.zakres,x,y))
+                            return false;
+                        break;
+                    case 1:
+                        if(!petlaY1X9(block.zakres,x,y))
+                            return false;
+                        break;
+                    case 9:
+                        if(!petlaY9X9(block.zakres,x,y))
+                            return false;
+                        break;
+                    case 10:
+                        if(!petlaY10X9(block.zakres,x,y))
+                            return false;
+                        break;
+                    default:
+                        if(!petlaX9(block.zakres,x,y))
+                            return false;
+                        break;
+                }
+                block.usunKlocek();
+                return true;
             case 10:
-                for (int i = 0; i < 3; i++)
-                    if (block.zakres[i][2] == 1 || block.zakres[i][1] == 1)
-                        return false;
-                break;
+                switch (y) {
+                    case 0:
+                        if(!petlaY0X10(block.zakres,x,y))
+                            return false;
+                        break;
+                    case 1:
+                        if(!petlaY1X10(block.zakres,x,y))
+                            return false;
+                        break;
+                    case 9:
+                        if(!petlaY9X10(block.zakres,x,y))
+                            return false;
+                        break;
+                    case 10:
+                        if(!petlaY10X10(block.zakres,x,y))
+                            return false;
+                        break;
+                    default:
+                        if(!petlaX10(block.zakres,x,y))
+                            return false;
+                        break;
+                }
+                block.usunKlocek();
+                return true;
         }
         switch (y) {
             case 0:
-                for (int i = 0; i < 3; i++)
-                    if (block.zakres[0][i] == 1 || block.zakres[1][i] == 1)
-                        return false;
-                break;
-            case 1:
-                for (int i = 0; i < 3; i++)
-                    if (block.zakres[0][i] == 1)
-                        return false;
-                break;
-            case 9:
-                for (int i = 0; i < 3; i++)
-                    if (block.zakres[2][i] == 1)
-                        return false;
-                break;
-            case 10:
-                for (int i = 0; i < 3; i++)
-                    if (block.zakres[2][i] == 1 || block.zakres[1][i] == 1)
-                        return false;
-                break;
-        }
-
-        switch (x) {
-            case 0:
-                switch (y) {
-                    case 0:
-                        for (int j = 2; j < 3; j++)
-                            for (int i = 2; i < 3; i++)
-                                if (block.zakres[j][i] == 1)
-                                    if ((map[y - 2 + j][x - 2 + i]) == 1)
-                                        return false;
-                        for (int j = 2; j < 3; j++)
-                            for (int i = 2; i < 3; i++)
-                                if (block.zakres[j][i] == 1)
-                                    map[y - 2 + j][x - 2 + i] = 1;
-                        break;
-                    case 1:
-                        for (int j = 1; j < 3; j++)
-                            for (int i = 2; i < 3; i++)
-                                if (block.zakres[j][i] == 1)
-                                    if ((map[y - 2 + j][x - 2 + i]) == 1)
-                                        return false;
-                        for (int j = 1; j < 3; j++)
-                            for (int i = 2; i < 3; i++)
-                                if (block.zakres[j][i] == 1)
-                                    map[y - 2 + j][x - 2 + i] = 1;
-                        break;
-                    case 9:
-                        for (int j = 0; j < 2; j++)
-                            for (int i = 2; i < 3; i++)
-                                if (block.zakres[j][i] == 1)
-                                    if ((map[y - 2 + j][x - 2 + i]) == 1)
-                                        return false;
-                        for (int j = 0; j < 2; j++)
-                            for (int i = 2; i < 3; i++)
-                                if (block.zakres[j][i] == 1)
-                                    map[y - 2 + j][x - 2 + i] = 1;
-                        break;
-                    case 10:
-                        for (int j = 0; j < 1; j++)
-                            for (int i = 2; i < 3; i++)
-                                if (block.zakres[j][i] == 1)
-                                    if ((map[y - 2 + j][x - 2 + i]) == 1)
-                                        return false;
-                        for (int j = 0; j < 1; j++)
-                            for (int i = 2; i < 3; i++)
-                                if (block.zakres[j][i] == 1)
-                                    map[y - 2 + j][x - 2 + i] = 1;
-                        break;
-                    default:
-                        for (int j = 0; j < 3; j++)
-                            for (int i = 2; i < 3; i++)
-                                if (block.zakres[j][i] == 1)
-                                    if ((map[y - 2 + j][x - 2 + i]) == 1)
-                                        return false;
-                        for (int j = 0; j < 3; j++)
-                            for (int i = 2; i < 3; i++)
-                                if (block.zakres[j][i] == 1)
-                                    map[y - 2 + j][x - 2 + i] = 1;
-                        break;
-                }
+                if(!petlaY0(block.zakres,x,y))
+                    return false;
                 block.usunKlocek();
                 return true;
             case 1:
-                switch (y) {
-                    case 0:
-                        for (int j = 2; j < 3; j++)
-                            for (int i = 1; i < 3; i++)
-                                if (block.zakres[j][i] == 1)
-                                    if ((map[y - 2 + j][x - 2 + i]) == 1)
-                                        return false;
-                        for (int j = 2; j < 3; j++)
-                            for (int i = 1; i < 3; i++)
-                                if (block.zakres[j][i] == 1)
-                                    map[y - 2 + j][x - 2 + i] = 1;
-                        break;
-                    case 1:
-                        for (int j = 1; j < 3; j++)
-                            for (int i = 1; i < 3; i++)
-                                if (block.zakres[j][i] == 1)
-                                    if ((map[y - 2 + j][x - 2 + i]) == 1)
-                                        return false;
-                        for (int j = 1; j < 3; j++)
-                            for (int i = 1; i < 3; i++)
-                                if (block.zakres[j][i] == 1)
-                                    map[y - 2 + j][x - 2 + i] = 1;
-                        break;
-                    case 9:
-                        for (int j = 0; j < 2; j++)
-                            for (int i = 1; i < 3; i++)
-                                if (block.zakres[j][i] == 1)
-                                    if ((map[y - 2 + j][x - 2 + i]) == 1)
-                                        return false;
-                        for (int j = 0; j < 2; j++)
-                            for (int i = 1; i < 3; i++)
-                                if (block.zakres[j][i] == 1)
-                                    map[y - 2 + j][x - 2 + i] = 1;
-                        break;
-                    case 10:
-                        for (int j = 0; j < 1; j++)
-                            for (int i = 1; i < 3; i++)
-                                if (block.zakres[j][i] == 1)
-                                    if ((map[y - 2 + j][x - 2 + i]) == 1)
-                                        return false;
-                        for (int j = 0; j < 1; j++)
-                            for (int i = 1; i < 3; i++)
-                                if (block.zakres[j][i] == 1)
-                                    map[y - 2 + j][x - 2 + i] = 1;
-                        break;
-                    default:
-                        for (int j = 0; j < 3; j++)
-                            for (int i = 1; i < 3; i++)
-                                if (block.zakres[j][i] == 1)
-                                    if ((map[y - 2 + j][x - 2 + i]) == 1)
-                                        return false;
-                        for (int j = 0; j < 3; j++)
-                            for (int i = 1; i < 3; i++)
-                                if (block.zakres[j][i] == 1)
-                                    map[y - 2 + j][x - 2 + i] = 1;
-                        break;
-                }
+                if(!petlaY1(block.zakres,x,y))
+                    return false;
                 block.usunKlocek();
                 return true;
             case 9:
-                switch (y) {
-                    case 0:
-                        for (int j = 2; j < 3; j++)
-                            for (int i = 0; i < 2; i++)
-                                if (block.zakres[j][i] == 1)
-                                    if ((map[y - 2 + j][x - 2 + i]) == 1)
-                                        return false;
-                        for (int j = 2; j < 3; j++)
-                            for (int i = 0; i < 2; i++)
-                                if (block.zakres[j][i] == 1)
-                                    map[y - 2 + j][x - 2 + i] = 1;
-                        break;
-                    case 1:
-                        for (int j = 1; j < 3; j++)
-                            for (int i = 0; i < 2; i++)
-                                if (block.zakres[j][i] == 1)
-                                    if ((map[y - 2 + j][x - 2 + i]) == 1)
-                                        return false;
-                        for (int j = 1; j < 3; j++)
-                            for (int i = 0; i < 2; i++)
-                                if (block.zakres[j][i] == 1)
-                                    map[y - 2 + j][x - 2 + i] = 1;
-                        break;
-                    case 9:
-                        for (int j = 0; j < 2; j++)
-                            for (int i = 0; i < 2; i++)
-                                if (block.zakres[j][i] == 1)
-                                    if ((map[y - 2 + j][x - 2 + i]) == 1)
-                                        return false;
-                        for (int j = 0; j < 2; j++)
-                            for (int i = 0; i < 2; i++)
-                                if (block.zakres[j][i] == 1)
-                                    map[y - 2 + j][x - 2 + i] = 1;
-                        break;
-                    case 10:
-                        for (int j = 0; j < 1; j++)
-                            for (int i = 0; i < 2; i++)
-                                if (block.zakres[j][i] == 1)
-                                    if ((map[y - 2 + j][x - 2 + i]) == 1)
-                                        return false;
-                        for (int j = 0; j < 1; j++)
-                            for (int i = 0; i < 2; i++)
-                                if (block.zakres[j][i] == 1)
-                                    map[y - 2 + j][x - 2 + i] = 1;
-                        break;
-                    default:
-                        for (int j = 0; j < 3; j++)
-                            for (int i = 0; i < 2; i++)
-                                if (block.zakres[j][i] == 1)
-                                    if ((map[y - 2 + j][x - 2 + i]) == 1)
-                                        return false;
-                        for (int j = 0; j < 3; j++)
-                            for (int i = 0; i < 2; i++)
-                                if (block.zakres[j][i] == 1)
-                                    map[y - 2 + j][x - 2 + i] = 1;
-                        break;
-                }
+                if(!petlaY9(block.zakres,x,y))
+                    return false;
                 block.usunKlocek();
                 return true;
             case 10:
-                switch (y) {
-                    case 0:
-                        for (int j = 2; j < 3; j++)
-                            for (int i = 0; i < 1; i++)
-                                if (block.zakres[j][i] == 1)
-                                    if ((map[y - 2 + j][x - 2 + i]) == 1)
-                                        return false;
-                        for (int j = 2; j < 3; j++)
-                            for (int i = 0; i < 1; i++)
-                                if (block.zakres[j][i] == 1)
-                                    map[y - 2 + j][x - 2 + i] = 1;
-                        break;
-                    case 1:
-                        for (int j = 1; j < 3; j++)
-                            for (int i = 0; i < 1; i++)
-                                if (block.zakres[j][i] == 1)
-                                    if ((map[y - 2 + j][x - 2 + i]) == 1)
-                                        return false;
-                        for (int j = 1; j < 3; j++)
-                            for (int i = 0; i < 1; i++)
-                                if (block.zakres[j][i] == 1)
-                                    map[y - 2 + j][x - 2 + i] = 1;
-                        break;
-                    case 9:
-                        for (int j = 0; j < 2; j++)
-                            for (int i = 0; i < 1; i++)
-                                if (block.zakres[j][i] == 1)
-                                    if ((map[y - 2 + j][x - 2 + i]) == 1)
-                                        return false;
-                        for (int j = 0; j < 2; j++)
-                            for (int i = 0; i < 1; i++)
-                                if (block.zakres[j][i] == 1)
-                                    map[y - 2 + j][x - 2 + i] = 1;
-                        break;
-                    case 10:
-                        for (int j = 0; j < 1; j++)
-                            for (int i = 0; i < 1; i++)
-                                if (block.zakres[j][i] == 1)
-                                    if ((map[y - 2 + j][x - 2 + i]) == 1)
-                                        return false;
-                        for (int j = 0; j < 1; j++)
-                            for (int i = 0; i < 1; i++)
-                                if (block.zakres[j][i] == 1)
-                                    map[y - 2 + j][x - 2 + i] = 1;
-                        break;
-                    default:
-                        for (int j = 0; j < 3; j++)
-                            for (int i = 0; i < 1; i++)
-                                if (block.zakres[j][i] == 1)
-                                    if ((map[y - 2 + j][x - 2 + i]) == 1)
-                                        return false;
-                        for (int j = 0; j < 3; j++)
-                            for (int i = 0; i < 1; i++)
-                                if (block.zakres[j][i] == 1)
-                                    map[y - 2 + j][x - 2 + i] = 1;
-                        break;
-                }
+                if(!petlaY10(block.zakres,x,y))
+                    return false;
                 block.usunKlocek();
                 return true;
         }
-
-        switch (y) {
-            case 0:
-                for (int j = 2; j < 3; j++)
-                    for (int i = 0; i < 3; i++)
-                        if (block.zakres[j][i] == 1)
-                            if ((map[y - 2 + j][x - 2 + i]) == 1)
-                                return false;
-                for (int j = 1; j < 3; j++)
-                    for (int i = 0; i < 3; i++)
-                        if (block.zakres[j][i] == 1)
-                            map[y - 2 + j][x - 2 + i] = 1;
-                block.usunKlocek();
-                return true;
-            case 1:
-                for (int j = 1; j < 3; j++)
-                    for (int i = 0; i < 3; i++)
-                        if (block.zakres[j][i] == 1)
-                            if ((map[y - 2 + j][x - 2 + i]) == 1)
-                                return false;
-                for (int j = 1; j < 3; j++)
-                    for (int i = 0; i < 3; i++)
-                        if (block.zakres[j][i] == 1)
-                            map[y - 2 + j][x - 2 + i] = 1;
-                block.usunKlocek();
-                return true;
-            case 9:
-                for (int j = 0; j < 2; j++)
-                    for (int i = 0; i < 3; i++)
-                        if (block.zakres[j][i] == 1)
-                            if ((map[y - 2 + j][x - 2 + i]) == 1)
-                                return false;
-                for (int j = 0; j < 2; j++)
-                    for (int i = 0; i < 3; i++)
-                        if (block.zakres[j][i] == 1)
-                            map[y - 2 + j][x - 2 + i] = 1;
-                block.usunKlocek();
-                return true;
-            case 10:
-                for (int j = 0; j < 1; j++)
-                    for (int i = 0; i < 3; i++)
-                        if (block.zakres[j][i] == 1)
-                            if ((map[y - 2 + j][x - 2 + i]) == 1)
-                                return false;
-                for (int j = 0; j < 1; j++)
-                    for (int i = 0; i < 3; i++)
-                        if (block.zakres[j][i] == 1)
-                            map[y - 2 + j][x - 2 + i] = 1;
-                block.usunKlocek();
-                return true;
-        }
-
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (block.zakres[i][j] == 1)
@@ -419,169 +314,394 @@ public class Plansza extends JPanel {
                     map[y - 2 + i][x - 2 + j] = 1;
             }
         }
-
         block.usunKlocek();
         return true;
     }
 
-    //Sprawdza pola 3x3 = t[0-8], wiersze = t[9-17] i kolumny = t[18-26] ,gdy uzupełnione nadaje wartość 1
-    public void sprawdz(int[] t) {
-        int x = 0;
-        for (int i = 0; i < 3; i++)
-            for (int j = 0; j < 3; j++)
-                if (map[i][j] == 1) x++;
-        if (x == 9)
-            t[0] = 1;
-        else
-            t[0] = 0;
-        x = 0;
-        for (int i = 0; i < 3; i++)
-            for (int j = 3; j < 6; j++)
-                if (map[i][j] == 1) x++;
-        if (x == 9)
-            t[1] = 1;
-        else
-            t[1] = 0;
-        x = 0;
-        for (int i = 0; i < 3; i++)
-            for (int j = 6; j < 9; j++)
-                if (map[i][j] == 1) x++;
-        if (x == 9)
-            t[2] = 1;
-        else
-            t[2] = 0;
-        x = 0;
-        for (int i = 3; i < 6; i++)
-            for (int j = 0; j < 3; j++)
-                if (map[i][j] == 1) x++;
-        if (x == 9)
-            t[3] = 1;
-        else
-            t[3] = 0;
-        x = 0;
-        for (int i = 3; i < 6; i++)
-            for (int j = 3; j < 6; j++)
-                if (map[i][j] == 1) x++;
-        if (x == 9)
-            t[4] = 1;
-        else
-            t[4] = 0;
-        x = 0;
-        for (int i = 3; i < 6; i++)
-            for (int j = 6; j < 9; j++)
-                if (map[i][j] == 1) x++;
-        if (x == 9)
-            t[5] = 1;
-        else
-            t[5] = 0;
-        x = 0;
-        for (int i = 6; i < 9; i++)
-            for (int j = 0; j < 3; j++)
-                if (map[i][j] == 1) x++;
-        if (x == 9)
-            t[6] = 1;
-        else
-            t[6] = 0;
-        x = 0;
-        for (int i = 6; i < 9; i++)
-            for (int j = 3; j < 6; j++)
-                if (map[i][j] == 1) x++;
-        if (x == 9)
-            t[7] = 1;
-        else
-            t[7] = 0;
-        x = 0;
-        for (int i = 6; i < 9; i++)
-            for (int j = 6; j < 9; j++)
-                if (map[i][j] == 1) x++;
-        if (x == 9)
-            t[8] = 1;
-        else
-            t[8] = 0;
-        for (int i = 0; i < 9; i++) {
-            x = 0;
-            for (int j = 0; j < 9; j++)
-                if (map[i][j] == 1) x++;
-            if (x == 9)
-                t[9 + i] = 1;
-            else
-                t[9 + i] = 0;
-        }
-
-        for (int i = 0; i < 9; i++) {
-            x = 0;
-            for (int j = 0; j < 9; j++)
-                if (map[j][i] == 1) x++;
-            if (x == 9) {
-                t[18 + i] = 1;
-            } else
-                t[18 + i] = 0;
-        }
+    private boolean petlaY0X0(int[][] zakres, int x, int y)
+    {
+        for (int j = 2; j < 3; j++)
+            for (int i = 2; i < 3; i++)
+                if (zakres[j][i] == 1)
+                    if ((map[y - 2 + j][x - 2 + i]) == 1)
+                        return false;
+        for (int j = 2; j < 3; j++)
+            for (int i = 2; i < 3; i++)
+                if (zakres[j][i] == 1)
+                    map[y - 2 + j][x - 2 + i] = 1;
+        return true;
     }
 
-    //Usuwa pola analizując tabele wypełnioną funkcją sprawdz
-    public int usun(int[] t) {
-        int combo = 0;
-        for (int i = 0; i < 27; i++) {
-            if (t[i] == 1) {
-                combo++;
-                if (i < 9)
-                    switch (i) {
-                        case 0:
-                            for (int x = 0; x < 3; x++)
-                                for (int j = 0; j < 3; j++)
-                                    map[x][j] = 0;
-                            break;
-                        case 1:
-                            for (int x = 0; x < 3; x++)
-                                for (int j = 3; j < 6; j++)
-                                    map[x][j] = 0;
-                            break;
-                        case 2:
-                            for (int x = 0; x < 3; x++)
-                                for (int j = 6; j < 9; j++)
-                                    map[x][j] = 0;
-                            break;
-                        case 3:
-                            for (int x = 3; x < 6; x++)
-                                for (int j = 0; j < 3; j++)
-                                    map[x][j] = 0;
-                            break;
-                        case 4:
-                            for (int x = 3; x < 6; x++)
-                                for (int j = 3; j < 6; j++)
-                                    map[x][j] = 0;
-                            break;
-                        case 5:
-                            for (int x = 3; x < 6; x++)
-                                for (int j = 6; j < 9; j++)
-                                    map[x][j] = 0;
-                            break;
-                        case 6:
-                            for (int x = 6; x < 9; x++)
-                                for (int j = 0; j < 3; j++)
-                                    map[x][j] = 0;
-                            break;
-                        case 7:
-                            for (int x = 6; x < 9; x++)
-                                for (int j = 3; j < 6; j++)
-                                    map[x][j] = 0;
-                            break;
-                        case 8:
-                            for (int x = 6; x < 9; x++)
-                                for (int j = 6; j < 9; j++)
-                                    map[x][j] = 0;
-                            break;
-                    }
-                else if (i < 18) {
-                    for (int j = 0; j < 9; j++)
-                        map[i - 9][j] = 0;
-                } else {
-                    for (int j = 0; j < 9; j++)
-                        map[j][i - 18] = 0;
-                }
-            }
+    private boolean petlaY1X0(int[][] zakres, int x, int y)
+    {
+        for (int j = 1; j < 3; j++)
+            for (int i = 2; i < 3; i++)
+                if (zakres[j][i] == 1)
+                    if ((map[y - 2 + j][x - 2 + i]) == 1)
+                        return false;
+        for (int j = 1; j < 3; j++)
+            for (int i = 2; i < 3; i++)
+                if (zakres[j][i] == 1)
+                    map[y - 2 + j][x - 2 + i] = 1;
+        return true;
+    }
+
+    private boolean petlaY9X0(int[][] zakres, int x, int y)
+    {
+        for (int j = 0; j < 2; j++)
+            for (int i = 2; i < 3; i++)
+                if (zakres[j][i] == 1)
+                    if ((map[y - 2 + j][x - 2 + i]) == 1)
+                        return false;
+        for (int j = 0; j < 2; j++)
+            for (int i = 2; i < 3; i++)
+                if (zakres[j][i] == 1)
+                    map[y - 2 + j][x - 2 + i] = 1;
+        return true;
+    }
+
+    private boolean petlaY10X0(int[][] zakres, int x, int y)
+    {
+        for (int j = 0; j < 1; j++)
+            for (int i = 2; i < 3; i++)
+                if (zakres[j][i] == 1)
+                    if ((map[y - 2 + j][x - 2 + i]) == 1)
+                        return false;
+        for (int j = 0; j < 1; j++)
+            for (int i = 2; i < 3; i++)
+                if (zakres[j][i] == 1)
+                    map[y - 2 + j][x - 2 + i] = 1;
+        return true;
+    }
+
+    private boolean petlaY0X1(int[][] zakres, int x, int y)
+    {
+        for (int j = 2; j < 3; j++)
+            for (int i = 1; i < 3; i++)
+                if (zakres[j][i] == 1)
+                    if ((map[y - 2 + j][x - 2 + i]) == 1)
+                        return false;
+        for (int j = 2; j < 3; j++)
+            for (int i = 1; i < 3; i++)
+                if (zakres[j][i] == 1)
+                    map[y - 2 + j][x - 2 + i] = 1;
+        return true;
+    }
+
+    private boolean petlaY1X1(int[][] zakres, int x, int y)
+    {
+        for (int j = 1; j < 3; j++)
+            for (int i = 1; i < 3; i++)
+                if (zakres[j][i] == 1)
+                    if ((map[y - 2 + j][x - 2 + i]) == 1)
+                        return false;
+        for (int j = 1; j < 3; j++)
+            for (int i = 1; i < 3; i++)
+                if (zakres[j][i] == 1)
+                    map[y - 2 + j][x - 2 + i] = 1;
+        return true;
+    }
+
+    private boolean petlaY9X1(int[][] zakres, int x, int y)
+    {
+        for (int j = 0; j < 2; j++)
+            for (int i = 1; i < 3; i++)
+                if (zakres[j][i] == 1)
+                    if ((map[y - 2 + j][x - 2 + i]) == 1)
+                        return false;
+        for (int j = 0; j < 2; j++)
+            for (int i = 1; i < 3; i++)
+                if (zakres[j][i] == 1)
+                    map[y - 2 + j][x - 2 + i] = 1;
+        return true;
+    }
+
+    private boolean petlaY10X1(int[][] zakres, int x, int y)
+    {
+        for (int j = 0; j < 1; j++)
+            for (int i = 1; i < 3; i++)
+                if (zakres[j][i] == 1)
+                    if ((map[y - 2 + j][x - 2 + i]) == 1)
+                        return false;
+        for (int j = 0; j < 1; j++)
+            for (int i = 1; i < 3; i++)
+                if (zakres[j][i] == 1)
+                    map[y - 2 + j][x - 2 + i] = 1;
+        return true;
+    }
+
+    private boolean petlaY0X9(int[][] zakres, int x, int y)
+    {
+        for (int j = 2; j < 3; j++)
+            for (int i = 0; i < 2; i++)
+                if (zakres[j][i] == 1)
+                    if ((map[y - 2 + j][x - 2 + i]) == 1)
+                        return false;
+        for (int j = 2; j < 3; j++)
+            for (int i = 0; i < 2; i++)
+                if (zakres[j][i] == 1)
+                    map[y - 2 + j][x - 2 + i] = 1;
+        return true;
+    }
+
+    private boolean petlaY1X9(int[][] zakres, int x, int y)
+    {
+        for (int j = 1; j < 3; j++)
+            for (int i = 0; i < 2; i++)
+                if (zakres[j][i] == 1)
+                    if ((map[y - 2 + j][x - 2 + i]) == 1)
+                        return false;
+        for (int j = 1; j < 3; j++)
+            for (int i = 0; i < 2; i++)
+                if (zakres[j][i] == 1)
+                    map[y - 2 + j][x - 2 + i] = 1;
+        return true;
+    }
+
+    private boolean petlaY9X9(int[][] zakres, int x, int y)
+    {
+        for (int j = 0; j < 2; j++)
+            for (int i = 0; i < 2; i++)
+                if (zakres[j][i] == 1)
+                    if ((map[y - 2 + j][x - 2 + i]) == 1)
+                        return false;
+        for (int j = 0; j < 2; j++)
+            for (int i = 0; i < 2; i++)
+                if (zakres[j][i] == 1)
+                    map[y - 2 + j][x - 2 + i] = 1;
+        return true;
+    }
+
+    private boolean petlaY10X9(int[][] zakres, int x, int y)
+    {
+        for (int j = 0; j < 1; j++)
+            for (int i = 0; i < 2; i++)
+                if (zakres[j][i] == 1)
+                    if ((map[y - 2 + j][x - 2 + i]) == 1)
+                        return false;
+        for (int j = 0; j < 1; j++)
+            for (int i = 0; i < 2; i++)
+                if (zakres[j][i] == 1)
+                    map[y - 2 + j][x - 2 + i] = 1;
+        return true;
+    }
+
+    private boolean petlaY0X10(int[][] zakres, int x, int y)
+    {
+        for (int j = 2; j < 3; j++)
+            for (int i = 0; i < 1; i++)
+                if (zakres[j][i] == 1)
+                    if ((map[y - 2 + j][x - 2 + i]) == 1)
+                        return false;
+        for (int j = 2; j < 3; j++)
+            for (int i = 0; i < 1; i++)
+                if (zakres[j][i] == 1)
+                    map[y - 2 + j][x - 2 + i] = 1;
+        return true;
+    }
+
+    private boolean petlaY1X10(int[][] zakres, int x, int y)
+    {
+        for (int j = 1; j < 3; j++)
+            for (int i = 0; i < 1; i++)
+                if (zakres[j][i] == 1)
+                    if ((map[y - 2 + j][x - 2 + i]) == 1)
+                        return false;
+        for (int j = 1; j < 3; j++)
+            for (int i = 0; i < 1; i++)
+                if (zakres[j][i] == 1)
+                    map[y - 2 + j][x - 2 + i] = 1;
+        return true;
+    }
+
+    private boolean petlaY9X10(int[][] zakres, int x, int y)
+    {
+        for (int j = 0; j < 2; j++)
+            for (int i = 0; i < 1; i++)
+                if (zakres[j][i] == 1)
+                    if ((map[y - 2 + j][x - 2 + i]) == 1)
+                        return false;
+        for (int j = 0; j < 2; j++)
+            for (int i = 0; i < 1; i++)
+                if (zakres[j][i] == 1)
+                    map[y - 2 + j][x - 2 + i] = 1;
+        return true;
+    }
+
+    private boolean petlaY10X10(int[][] zakres, int x, int y)
+    {
+        for (int j = 0; j < 1; j++)
+            for (int i = 0; i < 1; i++)
+                if (zakres[j][i] == 1)
+                    if ((map[y - 2 + j][x - 2 + i]) == 1)
+                        return false;
+        for (int j = 0; j < 1; j++)
+            for (int i = 0; i < 1; i++)
+                if (zakres[j][i] == 1)
+                    map[y - 2 + j][x - 2 + i] = 1;
+        return true;
+    }
+
+    private boolean petlaY0(int[][] zakres, int x, int y)
+    {
+        for (int j = 2; j < 3; j++)
+            for (int i = 0; i < 3; i++)
+                if (zakres[j][i] == 1)
+                    if ((map[y - 2 + j][x - 2 + i]) == 1)
+                        return false;
+        for (int j = 1; j < 3; j++)
+            for (int i = 0; i < 3; i++)
+                if (zakres[j][i] == 1)
+                    map[y - 2 + j][x - 2 + i] = 1;
+        return true;
+    }
+
+    private boolean petlaY1(int[][] zakres, int x, int y)
+    {
+        for (int j = 1; j < 3; j++)
+            for (int i = 0; i < 3; i++)
+                if (zakres[j][i] == 1)
+                    if ((map[y - 2 + j][x - 2 + i]) == 1)
+                        return false;
+        for (int j = 1; j < 3; j++)
+            for (int i = 0; i < 3; i++)
+                if (zakres[j][i] == 1)
+                    map[y - 2 + j][x - 2 + i] = 1;
+        return true;
+    }
+
+    private boolean petlaY9(int[][] zakres, int x, int y)
+    {
+        for (int j = 0; j < 2; j++)
+            for (int i = 0; i < 3; i++)
+                if (zakres[j][i] == 1)
+                    if ((map[y - 2 + j][x - 2 + i]) == 1)
+                        return false;
+        for (int j = 0; j < 2; j++)
+            for (int i = 0; i < 3; i++)
+                if (zakres[j][i] == 1)
+                    map[y - 2 + j][x - 2 + i] = 1;
+        return true;
+    }
+
+
+    private boolean petlaY10(int[][] zakres, int x, int y)
+    {
+        for (int j = 0; j < 1; j++)
+            for (int i = 0; i < 3; i++)
+                if (zakres[j][i] == 1)
+                    if ((map[y - 2 + j][x - 2 + i]) == 1)
+                        return false;
+        for (int j = 0; j < 1; j++)
+            for (int i = 0; i < 3; i++)
+                if (zakres[j][i] == 1)
+                    map[y - 2 + j][x - 2 + i] = 1;
+        return true;
+    }
+
+    private boolean petlaX0(int[][] zakres, int x, int y)
+    {
+        for (int j = 0; j < 3; j++)
+            for (int i = 2; i < 3; i++)
+                if (zakres[j][i] == 1)
+                    if ((map[y - 2 + j][x - 2 + i]) == 1)
+                        return false;
+        for (int j = 0; j < 3; j++)
+            for (int i = 2; i < 3; i++)
+                if (zakres[j][i] == 1)
+                    map[y - 2 + j][x - 2 + i] = 1;
+        return true;
+    }
+
+    private boolean petlaX1(int[][] zakres, int x, int y)
+    {
+        for (int j = 0; j < 3; j++)
+            for (int i = 1; i < 3; i++)
+                if (zakres[j][i] == 1)
+                    if ((map[y - 2 + j][x - 2 + i]) == 1)
+                        return false;
+        for (int j = 0; j < 3; j++)
+            for (int i = 1; i < 3; i++)
+                if (zakres[j][i] == 1)
+                    map[y - 2 + j][x - 2 + i] = 1;
+        return true;
+    }
+
+    private boolean petlaX9(int[][] zakres, int x, int y)
+    {
+        for (int j = 0; j < 3; j++)
+            for (int i = 0; i < 2; i++)
+                if (zakres[j][i] == 1)
+                    if ((map[y - 2 + j][x - 2 + i]) == 1)
+                        return false;
+        for (int j = 0; j < 3; j++)
+            for (int i = 0; i < 2; i++)
+                if (zakres[j][i] == 1)
+                    map[y - 2 + j][x - 2 + i] = 1;
+        return true;
+    }
+
+
+    private boolean petlaX10(int[][] zakres, int x, int y)
+    {
+        for (int j = 0; j < 3; j++)
+            for (int i = 0; i < 1; i++)
+                if (zakres[j][i] == 1)
+                    if ((map[y - 2 + j][x - 2 + i]) == 1)
+                        return false;
+        for (int j = 0; j < 3; j++)
+            for (int i = 0; i < 1; i++)
+                if (zakres[j][i] == 1)
+                    map[y - 2 + j][x - 2 + i] = 1;
+        return true;
+    }
+
+    private boolean checkBorders(int[][] zakres, int x, int y)
+    {
+        switch (x) {
+            case 0:
+                for (int i = 0; i < 3; i++)
+                    if (zakres[i][0] == 1 || zakres[i][1] == 1)
+                        return false;
+                break;
+            case 1:
+                for (int i = 0; i < 3; i++)
+                    if (zakres[i][0] == 1)
+                        return false;
+                break;
+            case 9:
+                for (int i = 0; i < 3; i++)
+                    if (zakres[i][2] == 1)
+                        return false;
+                break;
+            case 10:
+                for (int i = 0; i < 3; i++)
+                    if (zakres[i][2] == 1 || zakres[i][1] == 1)
+                        return false;
+                break;
         }
-        return combo;
+        switch (y) {
+            case 0:
+                for (int i = 0; i < 3; i++)
+                    if (zakres[0][i] == 1 || zakres[1][i] == 1)
+                        return false;
+                break;
+            case 1:
+                for (int i = 0; i < 3; i++)
+                    if (zakres[0][i] == 1)
+                        return false;
+                break;
+            case 9:
+                for (int i = 0; i < 3; i++)
+                    if (zakres[2][i] == 1)
+                        return false;
+                break;
+            case 10:
+                for (int i = 0; i < 3; i++)
+                    if (zakres[2][i] == 1 || zakres[1][i] == 1)
+                        return false;
+                break;
+        }
+        return true;
     }
 }
